@@ -1,5 +1,6 @@
 ﻿using Business.Concrete;
 using DataAccess.Concrete;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using System;
 
@@ -9,7 +10,9 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            CarManager carManager = new CarManager(new InMemoryCarDal());
+            CarManager carManager = new CarManager(new EfCarDal());
+            BrandManager brandManager = new BrandManager(new EfBrandDal());
+            ColorManager colorManager = new ColorManager(new EfColorDal());
             bool cikis = true;
             string secim;
             while (cikis)
@@ -19,6 +22,9 @@ namespace ConsoleUI
                 Console.WriteLine("2- Araç Ekle");
                 Console.WriteLine("3- Araç Sil");
                 Console.WriteLine("4- Araç Güncelle");
+                Console.WriteLine("5- Marka Ekle");
+                Console.WriteLine("6- Marka Sil");
+                Console.WriteLine("7- Marka Güncelle");
                 Console.WriteLine("9- Çıkış");
                 Console.Write("Seçim yapınız: ");
                 secim = Console.ReadLine();
@@ -27,9 +33,20 @@ namespace ConsoleUI
                 {
                     case "1":
                         Console.Clear();
+                        Color color;
+                        Brand brand;
+                        string colorPrint;
+                        string brandPrint;
+
                         foreach(Car car in carManager.GetAll())
                         {
-                            carManager.Print(car);
+                            color = colorManager.GetById(car.ColorId);
+                            colorPrint = colorManager.Print(color);
+
+                            brand = brandManager.GetById(car.BrandId);
+                            brandPrint = brandManager.Print(brand);
+
+                            Console.WriteLine(brandPrint + colorPrint + carManager.Print(car));
                         }
                         break;
 
@@ -89,6 +106,40 @@ namespace ConsoleUI
                         car2.Description = Console.ReadLine();
 
                         carManager.Update(car2);
+                        break;
+
+                    case "5":
+                        Console.Clear();
+                        Brand brand1 = new Brand();
+
+                        Console.Write("Marka id: ");
+                        brand1.Id = Convert.ToInt32(Console.ReadLine());
+
+                        Console.Write("Marka ismi: ");
+                        brand1.BrandName = Console.ReadLine();
+         
+                        brandManager.Add(brand1);
+                        break;
+
+                    case "6":
+                        Console.Clear();
+                        int idBrand;
+                        Console.Write("Silmek istediğiniz Marka id: ");
+                        idBrand = Convert.ToInt32(Console.ReadLine());
+                        carManager.Delete(idBrand);
+                        break;
+
+                    case "7":
+                        Console.Clear();
+                        Brand brand2 = new Brand();
+
+                        Console.Write("Marka id: ");
+                        brand2.Id = Convert.ToInt32(Console.ReadLine());
+
+                        Console.Write("Marka ismi: ");
+                        brand2.BrandName = Console.ReadLine();
+
+                        brandManager.Update(brand2);
                         break;
 
                     case "9":

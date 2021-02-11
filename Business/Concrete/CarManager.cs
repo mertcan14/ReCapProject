@@ -23,7 +23,7 @@ namespace Business.Concrete
 
         public void Delete(int id)
         {
-            _carDal.Delete(id);
+            _carDal.Delete(_carDal.Get(c => c.Id == id));
         }
 
         public List<Car> GetAll()
@@ -31,24 +31,14 @@ namespace Business.Concrete
             return _carDal.GetAll();
         }
 
-        public Brand GetBrandId(int id)
-        {
-            return _carDal.GetBrandId(id);
-        }
-
         public Car GetById(int id)
         {
-            return _carDal.GetById(id);
+            return _carDal.Get(c => c.Id == id);
         }
 
-        public Color GetColorId(int id)
+        public string Print(Car car)
         {
-            return _carDal.GetColorId(id);
-        }
-
-        public void Print(Car car)
-        {
-            _carDal.Print(car);
+            return _carDal.Print(car);
         }
 
         public void Update(Car car)

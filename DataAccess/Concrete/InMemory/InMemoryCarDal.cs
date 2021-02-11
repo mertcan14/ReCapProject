@@ -3,6 +3,7 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace DataAccess.Concrete
@@ -88,6 +89,26 @@ namespace DataAccess.Concrete
         public void Print(Car car)
         {
             Console.WriteLine("Marka:" + GetBrandId(car.BrandId).BrandName + " - model: " + car.Description + " - renk: " + GetColorId(car.ColorId).ColorName + " - Yılı: " + car.ModelYear + " - Fiyat: " + car.DailyPrice);
+        }
+
+        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Car Get(Expression<Func<Car, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(Car entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        string IEntityRepository<Car>.Print(Car entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }
