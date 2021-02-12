@@ -1,12 +1,14 @@
-﻿using DataAccess.Abstract;
+﻿using Core.DataAccess;
+using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace DataAccess.Concrete
+namespace DataAccess.Concrete.InMemory
 {
     public class InMemoryCarDal : ICarDal
     {
@@ -106,7 +108,7 @@ namespace DataAccess.Concrete
             throw new NotImplementedException();
         }
 
-        string IEntityRepository<Car>.Print(Car entity)
+        public List<CarDetailDto> GetCarDetails(Expression<Func<CarDetailDto, bool>> filter = null)
         {
             throw new NotImplementedException();
         }

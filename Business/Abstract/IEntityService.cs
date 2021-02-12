@@ -1,4 +1,4 @@
-﻿using Entities.Abstract;
+﻿using Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,6 +12,5 @@ namespace Business.Abstract
         void Delete(int id);
         void Update(T entity);
         T GetById(int id);
-        string Print(T entity);
     }
 }

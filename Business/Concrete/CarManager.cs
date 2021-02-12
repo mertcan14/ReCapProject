@@ -1,8 +1,10 @@
 ﻿using Business.Abstract;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Business.Concrete
@@ -44,9 +46,9 @@ namespace Business.Concrete
             return _carDal.Get(c => c.Id == id);
         }
 
-        public string Print(Car car)
+        public List<CarDetailDto> GetCarDetails(Expression<Func<CarDetailDto, bool>> filter = null)
         {
-            return _carDal.Print(car);
+            return _carDal.GetCarDetails();
         }
 
         public void Update(Car car)

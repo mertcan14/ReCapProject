@@ -12,7 +12,6 @@ namespace ConsoleUI
         {
             CarManager carManager = new CarManager(new EfCarDal());
             BrandManager brandManager = new BrandManager(new EfBrandDal());
-            ColorManager colorManager = new ColorManager(new EfColorDal());
             bool cikis = true;
             string secim;
             while (cikis)
@@ -33,20 +32,9 @@ namespace ConsoleUI
                 {
                     case "1":
                         Console.Clear();
-                        Color color;
-                        Brand brand;
-                        string colorPrint;
-                        string brandPrint;
-
-                        foreach(Car car in carManager.GetAll())
+                        foreach(var car in carManager.GetCarDetails())
                         {
-                            color = colorManager.GetById(car.ColorId);
-                            colorPrint = colorManager.Print(color);
-
-                            brand = brandManager.GetById(car.BrandId);
-                            brandPrint = brandManager.Print(brand);
-
-                            Console.WriteLine(brandPrint + colorPrint + carManager.Print(car));
+                            Console.WriteLine("Marka: " + car.BrandName + " - Model: " + car.CarName + " - Renk: " + car.ColorName + " - Günlük Fiyat: " + car.DailyPrice);
                         }
                         break;
 
@@ -126,7 +114,7 @@ namespace ConsoleUI
                         int idBrand;
                         Console.Write("Silmek istediğiniz Marka id: ");
                         idBrand = Convert.ToInt32(Console.ReadLine());
-                        carManager.Delete(idBrand);
+                        brandManager.Delete(idBrand);
                         break;
 
                     case "7":

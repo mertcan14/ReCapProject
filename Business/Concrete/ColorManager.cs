@@ -36,11 +36,6 @@ namespace Business.Concrete
             return _colorDal.Get(c => c.Id == id);
         }
 
-        public string Print(Color entity)
-        {
-            return _colorDal.Print(entity);
-        }
-
         public void Update(Color entity)
         {
             _colorDal.Update(entity);

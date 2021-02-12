@@ -36,11 +36,6 @@ namespace Business.Concrete
             return _brandDal.Get(c => c.Id == id);
         }
 
-        public string Print(Brand entity)
-        {
-            return _brandDal.Print(entity);
-        }
-
         public void Update(Brand entity)
         {
             _brandDal.Update(entity);
