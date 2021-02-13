@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -18,42 +20,45 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
-        public void Add(Car car)
+        public IResult Add(Car car)
         {
             if(car.Description.Length > 2 &&  car.DailyPrice > 0)
             {
                 _carDal.Add(car);
+                return new SuccessResult("Başarı ile Eklendi.");
             }
             else
             {
-                Console.WriteLine("Araba model ismi 3 karakterden küçük veya araba günlük fiyatı 0 dan büyük değil");
+                return new ErrorResult("Araba model ismi 3 karakterden küçük veya araba günlük fiyatı 0 dan büyük değil");
             }
             
         }
 
-        public void Delete(int id)
+        public IResult Delete(int id)
         {
             _carDal.Delete(_carDal.Get(c => c.Id == id));
+            return new SuccessResult(Messages.AddedSuccess);
         }
 
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
-            return _carDal.GetAll();
+            return new SuccessDataResults<List<Car>> (_carDal.GetAll(), Messages.ListedSuccess);
         }
 
-        public Car GetById(int id)
+        public IDataResult<Car> GetById(int id)
         {
-            return _carDal.Get(c => c.Id == id);
+            return new SuccessDataResults<Car> (_carDal.Get(c => c.Id == id), Messages.ListedSuccess);
         }
 
-        public List<CarDetailDto> GetCarDetails(Expression<Func<CarDetailDto, bool>> filter = null)
+        public IDataResult<List<CarDetailDto>> GetCarDetails(Expression<Func<CarDetailDto, bool>> filter = null)
         {
-            return _carDal.GetCarDetails();
+            return new SuccessDataResults<List<CarDetailDto>> (_carDal.GetCarDetails(),Messages.ListedSuccess);
         }
 
-        public void Update(Car car)
+        public IResult Update(Car car)
         {
             _carDal.Update(car);
+            return new SuccessResult(Messages.UpdateSuccess);
         }
     }
 }

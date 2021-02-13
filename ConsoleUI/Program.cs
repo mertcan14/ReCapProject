@@ -32,9 +32,18 @@ namespace ConsoleUI
                 {
                     case "1":
                         Console.Clear();
-                        foreach(var car in carManager.GetCarDetails())
+                        var resultCarListed = carManager.GetCarDetails();
+                        if (resultCarListed.Success)
                         {
-                            Console.WriteLine("Marka: " + car.BrandName + " - Model: " + car.CarName + " - Renk: " + car.ColorName + " - Günlük Fiyat: " + car.DailyPrice);
+                            Console.WriteLine(resultCarListed.Messages);
+                            foreach (var car in resultCarListed.Data)
+                            {
+                                Console.WriteLine("Marka: " + car.BrandName + " - Model: " + car.CarName + " - Renk: " + car.ColorName + " - Günlük Fiyat: " + car.DailyPrice);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine(resultCarListed.Messages);
                         }
                         break;
 
@@ -60,7 +69,8 @@ namespace ConsoleUI
                         Console.Write("Araç model: ");
                         car1.Description = Console.ReadLine();
 
-                        carManager.Add(car1);
+                        var resultCarAdd = carManager.Add(car1);
+                        Console.WriteLine(resultCarAdd.Messages);
                         break;
 
                     case "3":
@@ -68,7 +78,8 @@ namespace ConsoleUI
                         int id;
                         Console.Write("Silmek istediğiniz Araç id: ");
                         id = Convert.ToInt32(Console.ReadLine());
-                        carManager.Delete(id);
+                        var resultCarDelete = carManager.Delete(id);
+                        Console.WriteLine(resultCarDelete.Messages);
                         break;
 
                     case "4":
@@ -93,7 +104,8 @@ namespace ConsoleUI
                         Console.Write("Araç model: ");
                         car2.Description = Console.ReadLine();
 
-                        carManager.Update(car2);
+                        var resultCarUpdate = carManager.Update(car2);
+                        Console.WriteLine(resultCarUpdate.Messages);
                         break;
 
                     case "5":
@@ -106,7 +118,8 @@ namespace ConsoleUI
                         Console.Write("Marka ismi: ");
                         brand1.BrandName = Console.ReadLine();
          
-                        brandManager.Add(brand1);
+                        var resultBrandAdd = brandManager.Add(brand1);
+                        Console.WriteLine(resultBrandAdd.Messages);
                         break;
 
                     case "6":
@@ -114,7 +127,8 @@ namespace ConsoleUI
                         int idBrand;
                         Console.Write("Silmek istediğiniz Marka id: ");
                         idBrand = Convert.ToInt32(Console.ReadLine());
-                        brandManager.Delete(idBrand);
+                        var resultBrandDelete = brandManager.Delete(idBrand);
+                        Console.WriteLine(resultBrandDelete.Messages);
                         break;
 
                     case "7":
@@ -127,7 +141,8 @@ namespace ConsoleUI
                         Console.Write("Marka ismi: ");
                         brand2.BrandName = Console.ReadLine();
 
-                        brandManager.Update(brand2);
+                        var resultBrandUpdate = brandManager.Update(brand2);
+                        Console.WriteLine(resultBrandUpdate.Messages);
                         break;
 
                     case "9":
