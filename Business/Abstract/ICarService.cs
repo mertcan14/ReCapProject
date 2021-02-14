@@ -11,5 +11,6 @@ namespace Business.Abstract
     public interface ICarService:IEntityService<Car>
     {
         IDataResult<List<CarDetailDto>> GetCarDetails(Expression<Func<CarDetailDto, bool>> filter = null);
+        IDataResult<CarDetailDto> GetCarDetail(int id);
     }
 }

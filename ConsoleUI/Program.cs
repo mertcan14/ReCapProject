@@ -1,8 +1,11 @@
 ﻿using Business.Concrete;
+using Core.Entities;
 using DataAccess.Concrete;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
+using System.Collections.Generic;
 
 namespace ConsoleUI
 {
@@ -10,8 +13,13 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
             CarManager carManager = new CarManager(new EfCarDal());
             BrandManager brandManager = new BrandManager(new EfBrandDal());
+            //UserTest();
+            //CustomerTest();
+            Rental rental1 = new Rental();
+
             bool cikis = true;
             string secim;
             while (cikis)
@@ -24,7 +32,9 @@ namespace ConsoleUI
                 Console.WriteLine("5- Marka Ekle");
                 Console.WriteLine("6- Marka Sil");
                 Console.WriteLine("7- Marka Güncelle");
-                Console.WriteLine("9- Çıkış");
+                Console.WriteLine("8- Araba Kirala");
+                Console.WriteLine("9- Araba Teslim");
+                Console.WriteLine("10- Çıkış");
                 Console.Write("Seçim yapınız: ");
                 secim = Console.ReadLine();
 
@@ -117,7 +127,7 @@ namespace ConsoleUI
 
                         Console.Write("Marka ismi: ");
                         brand1.BrandName = Console.ReadLine();
-         
+
                         var resultBrandAdd = brandManager.Add(brand1);
                         Console.WriteLine(resultBrandAdd.Messages);
                         break;
@@ -145,10 +155,77 @@ namespace ConsoleUI
                         Console.WriteLine(resultBrandUpdate.Messages);
                         break;
 
+                    case "8":
+                        Console.Clear();
+
+                        var result = rentalManager.CarAvailab();
+                        Console.WriteLine(result.Messages);
+                        foreach (var rental in result.Data)
+                        {
+                            var car = carManager.GetCarDetail(rental.Id);
+                            Console.WriteLine(car.Data.CarId + " " + car.Data.BrandName + " " + car.Data.CarName + " " + car.Data.ColorName + " " + car.Data.DailyPrice);
+                        }
+
+                        
+                        Console.WriteLine("Id Yazınız: ");
+                        rental1.Id = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("Seçim yapınız(Numara): ");
+                        rental1.CarId = Convert.ToInt32( Console.ReadLine());
+                        Console.WriteLine("Müşteri Id giriniz: ");
+                        rental1.CustomerId = Convert.ToInt32(Console.ReadLine());
+                        rental1.RentDate = DateTime.Now;
+                        var carRental = rentalManager.Add(rental1);
+
+                        Console.WriteLine(carRental.Messages);
+                        break;
+
                     case "9":
+                        Console.Clear();
+                        Console.Write("Id giriniz: ");
+                        int rentalId = Convert.ToInt32(Console.ReadLine());
+                        var resultRental = rentalManager.GetById(rentalId);
+                        resultRental.Data.ReturnDate = DateTime.Now;
+                        var sonuc = rentalManager.Update(resultRental.Data);
+                        Console.WriteLine(sonuc.Messages);
+                        break;
+
+                    case "10":
                         Environment.Exit(0);
                         break;
                 }
+            }
+        }
+
+        private static void CustomerTest()
+        {
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+            Customer customer = new Customer();
+            customer.UserId = 10;
+            customer.CompanyName = "KONAMI";
+
+
+            var result = customerManager.Update(customer);
+            Console.WriteLine(result.Messages);
+            //foreach (var customer in result.Data)
+            //{
+            //    Console.WriteLine(customer.CompanyName);
+            //}
+        }
+
+        private static void UserTest()
+        {
+            UserManager userManager = new UserManager(new EfUserDal());
+            //User user1 = new User();
+            //user1.Id = 10;
+            //user1.FirstName = "Hakkıcan";
+            //user1.LastName = "Deli";
+            //user1.Password = "asdqwe";
+            //user1.Email = "Deneme1@gmail.com";
+            var result = userManager.GetAll();
+            Console.WriteLine(result.Messages);
+            foreach(var user in result.Data)
+            {
+                Console.WriteLine(user.FirstName.Length+user.LastName);
             }
         }
     }

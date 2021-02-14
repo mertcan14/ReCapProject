@@ -50,6 +50,11 @@ namespace Business.Concrete
             return new SuccessDataResults<Car> (_carDal.Get(c => c.Id == id), Messages.ListedSuccess);
         }
 
+        public IDataResult<CarDetailDto> GetCarDetail(int id)
+        {
+            return new SuccessDataResults<CarDetailDto>(_carDal.GetCarDetail(id), Messages.ListedSuccess);
+        }
+
         public IDataResult<List<CarDetailDto>> GetCarDetails(Expression<Func<CarDetailDto, bool>> filter = null)
         {
             return new SuccessDataResults<List<CarDetailDto>> (_carDal.GetCarDetails(),Messages.ListedSuccess);
