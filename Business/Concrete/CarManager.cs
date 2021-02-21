@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspect.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -20,18 +22,16 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            if(car.Description.Length > 2 &&  car.DailyPrice > 0)
+            if (DateTime.Now.Hour == 15)
             {
                 _carDal.Add(car);
                 return new SuccessResult("Başarı ile Eklendi.");
             }
-            else
-            {
-                return new ErrorResult("Araba model ismi 3 karakterden küçük veya araba günlük fiyatı 0 dan büyük değil");
-            }
-            
+            throw new NotImplementedException();
+
         }
 
         public IResult Delete(int id)
@@ -59,7 +59,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResults<List<CarDetailDto>> (_carDal.GetCarDetails(),Messages.ListedSuccess);
         }
-
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Update(Car car)
         {
             _carDal.Update(car);
