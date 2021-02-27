@@ -17,5 +17,7 @@ namespace Business.Constants
 
         public static string ListedSuccess = "Ürün listelendi.";
         public static string ListedError = "Ürün listelenemedi.";
+
+        public static string ImageCount = "Maximum 5 tane olabilir";
     }
 }
