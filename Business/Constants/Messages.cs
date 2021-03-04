@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Core.Entities.Concrete;
+using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Business.Constants
@@ -19,5 +21,17 @@ namespace Business.Constants
         public static string ListedError = "Ürün listelenemedi.";
 
         public static string ImageCount = "Maximum 5 tane olabilir";
+
+        public static string NotFoundUser = "Kullanıcı Bulunamadı";
+
+        public static string PasswordError = "Şifre hatalı";
+
+        public static string LoginSuccess = "Giriş Başarılı";
+
+        public static string UserAvailable = "Kullanıcı Mevcut";
+
+        public static string CreatedToken = "Token Oluşturuldu";
+
+        public static string AuthorizationDenied = "Yetkilenme Reddedildi";
     }
 }

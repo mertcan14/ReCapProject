@@ -2,6 +2,7 @@
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspect.Autofac.Validation;
+using Core.Entities.Concrete;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -20,34 +21,54 @@ namespace Business.Concrete
             _userDal = userDal;
         }
 
-        [ValidationAspect(typeof(UserValidator))]
-        public IResult Add(User entity)
+        public void Add(User user)
         {
-            _userDal.Add(entity);
-            return new SuccessResult(Messages.AddedSuccess);
+            _userDal.Add(user);
         }
 
-        public IResult Delete(int id)
+        public User GetByEmail(string email)
         {
-            _userDal.Delete(_userDal.Get(u => u.Id == id));
-            return new SuccessResult(Messages.DeletedSuccess);
+            return _userDal.Get(u => u.Email == email);
         }
 
-        public IDataResult<List<User>> GetAll()
+        public List<OperationClaim> GetClaims(User user)
         {
-            return new SuccessDataResults<List<User>>(_userDal.GetAll(), Messages.ListedSuccess);
+            return _userDal.GetClaims(user);
         }
 
-        public IDataResult<User> GetById(int id)
-        {
-            return new SuccessDataResults<User>(_userDal.Get(u => u.Id == id), Messages.ListedSuccess);
-        }
 
-        [ValidationAspect(typeof(UserValidator))]
-        public IResult Update(User entity)
-        {
-            _userDal.Update(entity);
-            return new SuccessResult(Messages.UpdateSuccess);
-        }
+
+
+
+
+        //[ValidationAspect(typeof(UserValidator))]
+        //public IResult Add(User entity)
+        //{
+        //    _userDal.Add(entity);
+        //    return new SuccessResult(Messages.AddedSuccess);
+        //}
+
+        //public IResult Delete(int id)
+        //{
+        //    _userDal.Delete(_userDal.Get(u => u.Id == id));
+        //    return new SuccessResult(Messages.DeletedSuccess);
+        //}
+
+        //public IDataResult<List<User>> GetAll()
+        //{
+        //    return new SuccessDataResults<List<User>>(_userDal.GetAll(), Messages.ListedSuccess);
+        //}
+
+        //public IDataResult<User> GetById(int id)
+        //{
+        //    return new SuccessDataResults<User>(_userDal.Get(u => u.Id == id), Messages.ListedSuccess);
+        //}
+
+        //[ValidationAspect(typeof(UserValidator))]
+        //public IResult Update(User entity)
+        //{
+        //    _userDal.Update(entity);
+        //    return new SuccessResult(Messages.UpdateSuccess);
+        //}
     }
 }

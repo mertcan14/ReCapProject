@@ -221,12 +221,12 @@ namespace ConsoleUI
             //user1.LastName = "Deli";
             //user1.Password = "asdqwe";
             //user1.Email = "Deneme1@gmail.com";
-            var result = userManager.GetAll();
-            Console.WriteLine(result.Messages);
-            foreach(var user in result.Data)
-            {
-                Console.WriteLine(user.FirstName.Length+user.LastName);
-            }
+            //var result = userManager.GetAll();
+            //Console.WriteLine(result.Messages);
+            //foreach(var user in result.Data)
+            //{
+            //    Console.WriteLine(user.FirstName.Length+user.LastName);
+            //}
         }
     }
 }

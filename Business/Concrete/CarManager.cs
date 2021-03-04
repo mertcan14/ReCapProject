@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspect.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspect.Autofac.Validation;
@@ -23,6 +24,7 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(CarValidator))]
+        [SecuredOperation("product.add,admin")]
         public IResult Add(Car car)
         {
             if (DateTime.Now.Hour == 15)
