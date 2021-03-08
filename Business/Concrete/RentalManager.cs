@@ -1,6 +1,9 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspect.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspect.Autofac.Caching;
+using Core.Aspect.Autofac.Performance;
 using Core.Aspect.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -21,9 +24,11 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(RentalValidator))]
+        [SecuredOperation("product.add,admin")]
+        [CacheRemoveAspect("IRentalService.Get")]
         public IResult Add(Rental entity)
         {
-            var result = CarAvailab();
+            var result = GetCarAvailab();
             foreach (var car in result.Data)
             {
                 if (entity.CarId == car.Id)
@@ -37,7 +42,9 @@ namespace Business.Concrete
 
         }
 
-        public IDataResult<List<CarAvailable>> CarAvailab()
+        [PerformanceAspect(5)]
+        [CacheAspect]
+        public IDataResult<List<CarAvailable>> GetCarAvailab()
         {
             //return new SuccessDataResults<List<Rental>>(_rentalDal.GetAll(r => r.ReturnDate != null), Messages.ListedSuccess);
             
@@ -45,22 +52,30 @@ namespace Business.Concrete
             return new SuccessDataResults<List<CarAvailable>>(_rentalDal.CarAvailab(), Messages.ListedSuccess);
         }
 
+
+        [SecuredOperation("product.delete,admin")]
+        [CacheRemoveAspect("IRentalService.Get")]
         public IResult Delete(int id)
         {
             _rentalDal.Delete(_rentalDal.Get(u => u.Id == id));
             return new SuccessResult(Messages.DeletedSuccess);
         }
 
+        [CacheAspect]
         public IDataResult<List<Rental>> GetAll()
         {
             return new SuccessDataResults<List<Rental>>(_rentalDal.GetAll(), Messages.ListedSuccess);
         }
 
+        [CacheAspect]
         public IDataResult<Rental> GetById(int id)
         {
             return new SuccessDataResults<Rental>(_rentalDal.Get(u => u.Id == id), Messages.ListedSuccess);
         }
+
         [ValidationAspect(typeof(RentalValidator))]
+        [SecuredOperation("product.update,admin")]
+        [CacheRemoveAspect("IRentalService.Get")]
         public IResult Update(Rental entity)
         {
             _rentalDal.Update(entity);

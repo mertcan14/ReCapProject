@@ -77,6 +77,13 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("addtransaction")]
+        public IActionResult AddTransaction(Color color)
+        {
+            var result = _colorService.AddTransactionalTest(color);
+            return Ok(result);
+        }
+
 
     }
 }

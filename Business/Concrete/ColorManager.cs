@@ -1,6 +1,9 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspect.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspect.Autofac.Performance;
+using Core.Aspect.Autofac.Transaction;
 using Core.Aspect.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -21,18 +24,21 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(ColorValidator))]
+        [SecuredOperation("product.add,admin")]
         public IResult Add(Color entity)
         {
             _colorDal.Add(entity);
             return new Result(true, Messages.AddedSuccess);
         }
 
+        [SecuredOperation("product.delete,admin")]
         public IResult Delete(int id)
         {
             _colorDal.Delete(_colorDal.Get(c => c.Id == id));
             return new Result(true, Messages.DeletedSuccess);
         }
 
+        [PerformanceAspect(5)]
         public IDataResult<List<Color>> GetAll()
         {
             return new SuccessDataResults<List<Color>>(_colorDal.GetAll(), Messages.ListedSuccess);
@@ -44,10 +50,25 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(ColorValidator))]
+        [SecuredOperation("product.update,admin")]
         public IResult Update(Color entity)
         {
             _colorDal.Update(entity);
             return new Result(true, Messages.UpdateSuccess);
+        }
+
+        [TransactionScopeAspect]
+        public IResult AddTransactionalTest(Color entity)
+        {
+            Add(entity);
+            if (entity.ColorName.Length < 10)
+            {
+                throw new Exception("");
+            }
+            entity.Id += 1;
+            entity.ColorName = "asdasd";
+            Add(entity);
+            return null;
         }
     }
 }

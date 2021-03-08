@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspect.Autofac;
 using Business.Constants;
+using Core.Aspect.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -20,7 +22,7 @@ namespace Business.Concrete
             _carImageDal = carImageDal;
         }
 
-
+        [SecuredOperation("product.add,admin")]
         public IResult Add(CarImage entity)
         {
             var result = BusinessRules.Run(
@@ -35,6 +37,7 @@ namespace Business.Concrete
             return new ErrorResult(result.Messages);
             
         }
+        [SecuredOperation("product.delete,admin")]
         public IResult Delete(int id)
         {
             _carImageDal.DeleteImage(_carImageDal.Get(c => c.Id == id).ImagePath);
@@ -62,8 +65,8 @@ namespace Business.Concrete
             return new SuccessDataResults<List<CarImage>>(result, Messages.ListedSuccess);
         }
 
-        
 
+        [SecuredOperation("product.update,admin")]
         public IResult Update(CarImage entity)
         {
             _carImageDal.Update(entity);

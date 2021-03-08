@@ -9,6 +9,6 @@ namespace Business.Abstract
 {
     public interface IRentalService:IEntityService<Rental>
     {
-        IDataResult<List<CarAvailable>> CarAvailab();
+        IDataResult<List<CarAvailable>> GetCarAvailab();
     }
 }

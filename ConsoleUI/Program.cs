@@ -158,7 +158,7 @@ namespace ConsoleUI
                     case "8":
                         Console.Clear();
 
-                        var result = rentalManager.CarAvailab();
+                        var result = rentalManager.GetCarAvailab();
                         Console.WriteLine(result.Messages);
                         foreach (var rental in result.Data)
                         {

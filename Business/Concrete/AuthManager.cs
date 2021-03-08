@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Core.Aspect.Autofac.Performance;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Hashing;
@@ -28,7 +29,7 @@ namespace Business.Concrete
             var accessToken = _tokenHelper.CreateToken(user,claims);
             return new SuccessDataResults<AccessToken>(accessToken, Messages.CreatedToken);
         }
-
+        [PerformanceAspect(5)]
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
             var userToCheck = _userService.GetByEmail(userForLoginDto.Email);
@@ -42,7 +43,7 @@ namespace Business.Concrete
             }
             return new SuccessDataResults<User>(userToCheck, Messages.LoginSuccess);
         }
-
+        [PerformanceAspect(5)]
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
         {
             byte[] passwordHash, passwordSalt;
