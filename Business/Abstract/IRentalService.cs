@@ -10,5 +10,6 @@ namespace Business.Abstract
     public interface IRentalService:IEntityService<Rental>
     {
         IDataResult<List<CarAvailable>> GetCarAvailab();
+        IDataResult<List<RentalDetailDto>> GetRentalDetails();
     }
 }

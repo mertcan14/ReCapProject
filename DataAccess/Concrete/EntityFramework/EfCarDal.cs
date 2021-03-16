@@ -52,7 +52,15 @@ namespace DataAccess.Concrete.EntityFramework
                                  BrandName = br.BrandName,
                                  DailyPrice = ca.DailyPrice,
                              };
-                return result.ToList();
+                if (filter is null)
+                {
+                    return result.ToList();
+                }
+                else
+                {
+                    return result.Where(filter).ToList();
+                }
+                
             }
             
         }

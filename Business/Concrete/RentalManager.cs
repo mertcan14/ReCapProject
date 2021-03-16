@@ -81,5 +81,10 @@ namespace Business.Concrete
             _rentalDal.Update(entity);
             return new SuccessResult(Messages.UpdateSuccess);
         }
+
+        public IDataResult<List<RentalDetailDto>> GetRentalDetails()
+        {
+            return new SuccessDataResults<List<RentalDetailDto>>(_rentalDal.RentalDetails(), Messages.ListedSuccess);
+        }
     }
 }

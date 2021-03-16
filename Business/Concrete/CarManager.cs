@@ -19,10 +19,12 @@ namespace Business.Concrete
     public class CarManager : ICarService
     {
         ICarDal _carDal;
+        IBrandService _brandService;
 
-        public CarManager(ICarDal carDal)
+        public CarManager(ICarDal carDal, IBrandService brandService)
         {
             _carDal = carDal;
+            _brandService = brandService;
         }
 
         [ValidationAspect(typeof(CarValidator))]
@@ -65,6 +67,18 @@ namespace Business.Concrete
         public IDataResult<List<CarDetailDto>> GetCarDetails(Expression<Func<CarDetailDto, bool>> filter = null)
         {
             return new SuccessDataResults<List<CarDetailDto>> (_carDal.GetCarDetails(),Messages.ListedSuccess);
+        }
+        [CacheAspect]
+        public IDataResult<List<CarDetailDto>> GetCarByBrand(string brandName)
+        {
+            var result = _carDal.GetCarDetails(c => c.BrandName == brandName);
+            return new SuccessDataResults<List<CarDetailDto>>(result, Messages.ListedSuccess);
+        }
+        [CacheAspect]
+        public IDataResult<List<CarDetailDto>> GetCarByColor(string colorName)
+        {
+            var result = _carDal.GetCarDetails(c => c.ColorName == colorName);
+            return new SuccessDataResults<List<CarDetailDto>>(result, Messages.ListedSuccess);
         }
 
         [SecuredOperation("product.update,admin")]

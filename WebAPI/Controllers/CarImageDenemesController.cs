@@ -1,5 +1,4 @@
 ﻿using Business.Abstract;
-using Core.Utilities.Results;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,63 +11,67 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CarsController : ControllerBase
+    public class CarImageDenemesController : ControllerBase
     {
-        ICarService _entityManager;
+        private ICarImageService _carImageService;
 
-        public CarsController(ICarService entityManager)
+        public CarImageDenemesController(ICarImageService carImageService)
         {
-            _entityManager = entityManager;
+            _carImageService = carImageService;
         }
 
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
-            var result = _entityManager.GetCarDetails();
+            var result = _carImageService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 
-        [HttpGet("getcarbybrand")]
-        public IActionResult GetCarByBrand(string brandName)
+        [HttpGet("car/{carId}")]
+        public IActionResult GetAllByCarId(int carId)
         {
-            var result = _entityManager.GetCarByBrand(brandName);
+            var result = _carImageService.GetAllByCarId(carId);
             if (result.Success)
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 
-        [HttpGet("getcarbycolor")]
-        public IActionResult GetCarByColor(string colorName)
-        {
-            var result = _entityManager.GetCarByColor(colorName);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpGet("getbyid")]
+        [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var result = _entityManager.GetCarDetail(id);
+            var result = _carImageService.GetById(id);
             if (result.Success)
             {
                 return Ok(result);
             }
+
             return BadRequest(result);
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Car car)
+        public IActionResult Add([FromForm] IFormFile image, [FromForm] CarImage carImage)
         {
-            var result = _entityManager.Add(car);
+
+            var result = _carImageService.Addd(image, carImage);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost("delete")]
+        public IActionResult Delete(CarImage carImage)
+        {
+            var result = _carImageService.Delete(carImage);
             if (result.Success)
             {
                 return Ok(result);
@@ -77,20 +80,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update(Car car)
+        public IActionResult Update([FromForm] IFormFile image, [FromForm] CarImage carImage)
         {
-            var result = _entityManager.Update(car);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpGet("delete")]
-        public IActionResult Delete(int id)
-        {
-            var result = _entityManager.Delete(id);
+            var result = _carImageService.Update(image, carImage);
             if (result.Success)
             {
                 return Ok(result);
