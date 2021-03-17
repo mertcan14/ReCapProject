@@ -1,11 +1,9 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,42 +13,65 @@ namespace WebAPI.Controllers
     [ApiController]
     public class CarImagesController : ControllerBase
     {
-        ICarImageService _carImageService;
-        public static IWebHostEnvironment _webHostEnvironment;
+        private ICarImageService _carImageService;
 
-        public CarImagesController(ICarImageService carImageService, IWebHostEnvironment webHostEnvironment)
+        public CarImagesController(ICarImageService carImageService)
         {
             _carImageService = carImageService;
-            _webHostEnvironment = webHostEnvironment;
+        }
+
+        [HttpGet("getall")]
+        public IActionResult GetAll()
+        {
+            var result = _carImageService.GetAll();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("car/{carId}")]
+        public IActionResult GetAllByCarId(int carId)
+        {
+            var result = _carImageService.GetAllByCarId(carId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var result = _carImageService.GetById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
         }
 
         [HttpPost("add")]
-        public IActionResult Add([FromForm(Name = ("files"))] IFormFile image, [FromForm] CarImage carImage)
+        public IActionResult Add([FromForm] IFormFile image, [FromForm] CarImage carImage)
         {
-            string path = _webHostEnvironment.WebRootPath + "\\uploads\\";
-            var newGuidPath = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-            if (!Directory.Exists(path))
+
+            var result = _carImageService.Addd(image, carImage);
+            if (result.Success)
             {
-                Directory.CreateDirectory(path);
+                return Ok(result);
             }
-            using (FileStream fileStream = System.IO.File.Create(path + newGuidPath))
-            {
-                image.CopyTo(fileStream);
-                fileStream.Flush();
-                carImage.ImagePath = path + newGuidPath;
-                var result = _carImageService.Add(carImage);
-                if (result.Success)
-                {
-                    return Ok(result);
-                }
-                return BadRequest(result);
-            }
+            return BadRequest(result);
         }
 
-        [HttpGet("delete")]
-        public IActionResult Delete(int id)
+        [HttpPost("delete")]
+        public IActionResult Delete(CarImage carImage)
         {
-            var result = _carImageService.Delete(id);
+            var result = _carImageService.Delete(carImage);
             if (result.Success)
             {
                 return Ok(result);
@@ -59,39 +80,14 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update([FromForm(Name = ("files"))] IFormFile image, [FromForm] CarImage carImage)
+        public IActionResult Update([FromForm] IFormFile image, [FromForm] CarImage carImage)
         {
-            string path = _webHostEnvironment.WebRootPath + "\\uploads\\";
-            var newGuidPath = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            using (FileStream fileStream = System.IO.File.Create(path + newGuidPath))
-            {
-                image.CopyTo(fileStream);
-                fileStream.Flush();
-                carImage.ImagePath = path + newGuidPath;
-                var result = _carImageService.Update(carImage);
-                if (result.Success)
-                {
-                    return Ok(result);
-                }
-                return BadRequest(result);
-            }
-        }
-
-        [HttpGet("getcarimage")]
-        public IActionResult GetCarImage(int carId)
-        {
-            var result = _carImageService.GetCarImage(carId);
+            var result = _carImageService.Update(image, carImage);
             if (result.Success)
             {
                 return Ok(result);
             }
             return BadRequest(result);
-            
         }
     }
 }
