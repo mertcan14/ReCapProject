@@ -11,5 +11,6 @@ namespace Business.Abstract
     {
         IDataResult<List<CarAvailable>> GetCarAvailab();
         IDataResult<List<RentalDetailDto>> GetRentalDetails();
+        IResult CheckRental(Rental entity);
     }
 }

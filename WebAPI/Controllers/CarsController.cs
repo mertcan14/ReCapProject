@@ -53,6 +53,16 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+        [HttpGet("getcarbybrandcolor")]
+        public IActionResult GetCarByBrandColor(string brandName, string colorName)
+        {
+            var result = _entityManager.GetCarByBrandColor(brandName, colorName);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
 
         [HttpGet("getbyid")]
         public IActionResult GetById(int id)

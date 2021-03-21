@@ -11,6 +11,7 @@ using Entities.Concrete;
 using Entities.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Business.Concrete
@@ -23,24 +24,52 @@ namespace Business.Concrete
             _rentalDal = rentalDal;
         }
 
+        //[ValidationAspect(typeof(RentalValidator))]
+        ////[SecuredOperation("product.add,admin")]
+        //[CacheRemoveAspect("IRentalService.Get")]
+        //public IResult Add(Rental entity)
+        //{
+        //    var result = GetCarAvailab();
+        //    foreach (var car in result.Data)
+        //    {
+        //        if (entity.CarId == car.Id)
+        //        {
+        //            _rentalDal.Add(entity);
+        //            return new SuccessResult(Messages.AddedSuccess);
+
+        //        }
+        //    }
+        //    return new ErrorResult(Messages.AddedError);
+
+        //}
+
         [ValidationAspect(typeof(RentalValidator))]
-        [SecuredOperation("product.add,admin")]
+        //[SecuredOperation("product.add,admin")]
         [CacheRemoveAspect("IRentalService.Get")]
         public IResult Add(Rental entity)
         {
-            var result = GetCarAvailab();
-            foreach (var car in result.Data)
+            var result = CheckRentalCar(entity.CarId, entity.RentDate);
+            if (result)
             {
-                if (entity.CarId == car.Id)
-                {
-                    _rentalDal.Add(entity);
-                    return new SuccessResult(Messages.AddedSuccess);
-                    
-                }
+                _rentalDal.Add(entity);
+                return new SuccessResult(Messages.AddedSuccess);
             }
             return new ErrorResult(Messages.AddedError);
 
         }
+
+        [ValidationAspect(typeof(RentalValidator))]
+        public IResult CheckRental(Rental entity)
+        {
+            var result = CheckRentalCar(entity.CarId, entity.RentDate);
+            if (result)
+            {
+                return new SuccessResult(Messages.CanRent);
+            }
+            return new ErrorResult(Messages.CantRent);
+
+        }
+
 
         [PerformanceAspect(5)]
         [CacheAspect]
@@ -85,6 +114,27 @@ namespace Business.Concrete
         public IDataResult<List<RentalDetailDto>> GetRentalDetails()
         {
             return new SuccessDataResults<List<RentalDetailDto>>(_rentalDal.RentalDetails(), Messages.ListedSuccess);
+        }
+
+        public bool CheckRentalCar(int carId, DateTime rentDate)
+        {
+            var rentals = _rentalDal.GetAll(c => c.CarId == carId);
+            if (rentals == null)
+            {
+                return true;
+            }
+            else
+            {
+                var notNullRentals = _rentalDal.GetAll(c => c.CarId == carId && c.ReturnDate != null);
+                if (((notNullRentals.Where(c => c.ReturnDate>rentDate).Count()) == 0) && (rentals.Where(c => c.ReturnDate == null).Count())==0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
         }
     }
 }

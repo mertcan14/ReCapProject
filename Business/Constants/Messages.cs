@@ -33,5 +33,8 @@ namespace Business.Constants
         public static string CreatedToken = "Token Oluşturuldu";
 
         public static string AuthorizationDenied = "Yetkilenme Reddedildi";
+
+        public static string CanRent = "Araç müsait";
+        public static string CantRent = "Araç müsait değil";
     }
 }

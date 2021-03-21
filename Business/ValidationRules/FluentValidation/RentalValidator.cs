@@ -14,8 +14,6 @@ namespace Business.ValidationRules.FluentValidation
 
             RuleFor(r => r.CustomerId).NotEmpty();
 
-            RuleFor(r => r.Id).NotEmpty();
-
             RuleFor(r => r.RentDate).NotEmpty();
             RuleFor(r => r.RentDate).Must(RentDateValid).WithMessage("2010 yılından ve sonrası için tarih yazabilirsiniz...");
 
@@ -25,7 +23,7 @@ namespace Business.ValidationRules.FluentValidation
 
         private bool ReturnDateValid(Rental arg)
         {
-            return arg.RentDate < arg.ReturnDate && arg.ReturnDate < DateTime.Now;
+            return arg.RentDate < arg.ReturnDate ;
         }
 
         private bool RentDateValid(DateTime arg)

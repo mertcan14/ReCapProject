@@ -80,6 +80,11 @@ namespace Business.Concrete
             var result = _carDal.GetCarDetails(c => c.ColorName == colorName);
             return new SuccessDataResults<List<CarDetailDto>>(result, Messages.ListedSuccess);
         }
+        public IDataResult<List<CarDetailDto>> GetCarByBrandColor(string brandName, string colorName)
+        {
+            var result = _carDal.GetCarDetails(c => c.ColorName == colorName && c.BrandName == brandName);
+            return new SuccessDataResults<List<CarDetailDto>>(result, Messages.ListedSuccess);
+        }
 
         [SecuredOperation("product.update,admin")]
         [ValidationAspect(typeof(CarValidator))]
