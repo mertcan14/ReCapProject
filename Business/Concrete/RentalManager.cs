@@ -24,27 +24,8 @@ namespace Business.Concrete
             _rentalDal = rentalDal;
         }
 
-        //[ValidationAspect(typeof(RentalValidator))]
-        ////[SecuredOperation("product.add,admin")]
-        //[CacheRemoveAspect("IRentalService.Get")]
-        //public IResult Add(Rental entity)
-        //{
-        //    var result = GetCarAvailab();
-        //    foreach (var car in result.Data)
-        //    {
-        //        if (entity.CarId == car.Id)
-        //        {
-        //            _rentalDal.Add(entity);
-        //            return new SuccessResult(Messages.AddedSuccess);
-
-        //        }
-        //    }
-        //    return new ErrorResult(Messages.AddedError);
-
-        //}
-
-        [ValidationAspect(typeof(RentalValidator))]
         //[SecuredOperation("product.add,admin")]
+        [ValidationAspect(typeof(RentalValidator))]
         [CacheRemoveAspect("IRentalService.Get")]
         public IResult Add(Rental entity)
         {
@@ -72,12 +53,8 @@ namespace Business.Concrete
 
 
         [PerformanceAspect(5)]
-        [CacheAspect]
         public IDataResult<List<CarAvailable>> GetCarAvailab()
-        {
-            //return new SuccessDataResults<List<Rental>>(_rentalDal.GetAll(r => r.ReturnDate != null), Messages.ListedSuccess);
-            
-
+        {        
             return new SuccessDataResults<List<CarAvailable>>(_rentalDal.CarAvailab(), Messages.ListedSuccess);
         }
 
@@ -111,6 +88,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.UpdateSuccess);
         }
 
+        [CacheAspect]
         public IDataResult<List<RentalDetailDto>> GetRentalDetails()
         {
             return new SuccessDataResults<List<RentalDetailDto>>(_rentalDal.RentalDetails(), Messages.ListedSuccess);

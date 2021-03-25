@@ -27,8 +27,8 @@ namespace Business.Concrete
             _brandService = brandService;
         }
 
+        //[SecuredOperation("product.add,admin")]
         [ValidationAspect(typeof(CarValidator))]
-        [SecuredOperation("product.add,admin")]
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Add(Car car)
         {
@@ -51,7 +51,6 @@ namespace Business.Concrete
         {
             return new SuccessDataResults<List<Car>> (_carDal.GetAll(), Messages.ListedSuccess);
         }
-        [CacheAspect]
         public IDataResult<Car> GetById(int id)
         {
             return new SuccessDataResults<Car> (_carDal.Get(c => c.Id == id), Messages.ListedSuccess);
@@ -86,7 +85,7 @@ namespace Business.Concrete
             return new SuccessDataResults<List<CarDetailDto>>(result, Messages.ListedSuccess);
         }
 
-        [SecuredOperation("product.update,admin")]
+        //[SecuredOperation("product.update,admin")]
         [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Update(Car car)

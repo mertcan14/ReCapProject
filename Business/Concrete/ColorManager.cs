@@ -24,7 +24,7 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(ColorValidator))]
-        [SecuredOperation("product.add,admin")]
+        //[SecuredOperation("product.add,admin")]
         public IResult Add(Color entity)
         {
             _colorDal.Add(entity);
@@ -50,7 +50,7 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(ColorValidator))]
-        [SecuredOperation("product.update,admin")]
+        //[SecuredOperation("product.update,admin")]
         public IResult Update(Color entity)
         {
             _colorDal.Update(entity);
