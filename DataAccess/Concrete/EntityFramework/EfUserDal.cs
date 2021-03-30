@@ -2,6 +2,7 @@
 using Core.Entities.Concrete;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,16 @@ namespace DataAccess.Concrete.EntityFramework
                              where userOperationClaim.UserId == user.Id
                              select new OperationClaim { Id = operationClaim.Id, Name = operationClaim.Name };
                 return result.ToList();
+            }
+        }
+        public UserForRegisterDto GetById(int id)
+        {
+            using (var context = new Context())
+            {
+                var result = from u in context.Users
+                             where u.Id == id
+                             select new UserForRegisterDto { Email = u.Email, FirstName = u.FirstName, LastName = u.LastName, Password=""};
+                return result.First();
             }
         }
     }

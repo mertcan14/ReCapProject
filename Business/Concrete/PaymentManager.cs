@@ -9,7 +9,7 @@ namespace Business.Concrete
 {
     public class PaymentsManager : IPaymentService
     {
-        public IResult Pay(CreditCard creditCard)
+        public IResult Pay(CreditCardDto creditCard)
         {
             var result = CheckCreditCart(creditCard);
             if (result == true)
@@ -22,7 +22,7 @@ namespace Business.Concrete
             }
         }
 
-        public bool CheckCreditCart(CreditCard creditCard)
+        public bool CheckCreditCart(CreditCardDto creditCard)
         {
             int firstCardNumber = Convert.ToInt32(creditCard.creditNumber.Substring(0,1));
             int firstCardCVV = Convert.ToInt32(creditCard.cardCVV.Substring(0, 1));

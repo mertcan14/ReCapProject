@@ -21,7 +21,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("pay")]
-        public IActionResult Pay(CreditCard creditCard)
+        public IActionResult Pay(CreditCardDto creditCard)
         {
             var result = _paymentService.Pay(creditCard);
             if (result.Success)

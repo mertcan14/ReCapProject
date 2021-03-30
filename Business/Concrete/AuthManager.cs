@@ -26,7 +26,7 @@ namespace Business.Concrete
         public IDataResult<AccessToken> CreateAccessToken(User user)
         {
             var claims = _userService.GetClaims(user);
-            var accessToken = _tokenHelper.CreateToken(user,claims);
+            var accessToken = _tokenHelper.CreateToken(user,claims.Data);
             return new SuccessDataResults<AccessToken>(accessToken, Messages.CreatedToken);
         }
         [PerformanceAspect(5)]
@@ -37,11 +37,11 @@ namespace Business.Concrete
             {
                 return new ErrorDataResults<User>(Messages.NotFoundUser);
             }
-            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.PasswordHash, userToCheck.PasswordSalt))
+            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.Data.PasswordHash, userToCheck.Data.PasswordSalt))
             {
                 return new ErrorDataResults<User>(Messages.PasswordError);
             }
-            return new SuccessDataResults<User>(userToCheck, Messages.LoginSuccess);
+            return new SuccessDataResults<User>(userToCheck.Data, Messages.LoginSuccess);
         }
         [PerformanceAspect(5)]
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
@@ -64,7 +64,7 @@ namespace Business.Concrete
 
         public IResult UserExists(string email)
         {
-            if (_userService.GetByEmail(email) != null)
+            if (_userService.GetByEmail(email).Data != null)
             {
                 return new ErrorResult(Messages.UserAvailable);
             }

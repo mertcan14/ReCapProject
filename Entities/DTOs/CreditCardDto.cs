@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Entities.DTOs
 {
-    public class CreditCard:IDto
+    public class CreditCardDto:IDto
     {
         public int totalPrice { get; set; }
         public int customerId { get; set; }
