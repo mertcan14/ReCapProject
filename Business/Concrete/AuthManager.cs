@@ -70,5 +70,24 @@ namespace Business.Concrete
             }
             return new SuccessResult();
         }
+
+        public IResult ChangePassword(UserForLoginDto userForLoginDto)
+        {
+            var userToUpdate = _userService.GetByEmail(userForLoginDto.Email);
+            byte[] passwordHash, passwordSalt;
+            HashingHelper.CreatingPasswordHash(userForLoginDto.Password, out passwordHash, out passwordSalt);
+            var user = new User()
+            {
+                Id = userToUpdate.Data.Id,
+                Email = userForLoginDto.Email,
+                FirstName = userToUpdate.Data.FirstName,
+                LastName = userToUpdate.Data.LastName,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Status = true
+            };
+            _userService.UpdatePassword(user);
+            return new SuccessResult();
+        }
     }
 }

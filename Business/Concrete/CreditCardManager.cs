@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspect.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -18,6 +20,7 @@ namespace Business.Concrete
             _creditCardDal = creditCardDal;
         }
 
+        [ValidationAspect(typeof(CreditCardValidator))]
         public IResult Add(CreditCard entity)
         {
             _creditCardDal.Add(entity);
@@ -45,6 +48,7 @@ namespace Business.Concrete
             return new SuccessDataResults<List<CreditCard>>(_creditCardDal.GetAll(c => c.UserId == userId), Messages.ListedSuccess);
         }
 
+        [ValidationAspect(typeof(CreditCardValidator))]
         public IResult Update(CreditCard entity)
         {
             _creditCardDal.Update(entity);

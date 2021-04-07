@@ -57,39 +57,10 @@ namespace Business.Concrete
             return new SuccessResult(Messages.UpdateSuccess);
         }
 
-
-
-
-
-
-        //[ValidationAspect(typeof(UserValidator))]
-        //public IResult Add(User entity)
-        //{
-        //    _userDal.Add(entity);
-        //    return new SuccessResult(Messages.AddedSuccess);
-        //}
-
-        //public IResult Delete(int id)
-        //{
-        //    _userDal.Delete(_userDal.Get(u => u.Id == id));
-        //    return new SuccessResult(Messages.DeletedSuccess);
-        //}
-
-        //public IDataResult<List<User>> GetAll()
-        //{
-        //    return new SuccessDataResults<List<User>>(_userDal.GetAll(), Messages.ListedSuccess);
-        //}
-
-        //public IDataResult<User> GetById(int id)
-        //{
-        //    return new SuccessDataResults<User>(_userDal.Get(u => u.Id == id), Messages.ListedSuccess);
-        //}
-
-        //[ValidationAspect(typeof(UserValidator))]
-        //public IResult Update(User entity)
-        //{
-        //    _userDal.Update(entity);
-        //    return new SuccessResult(Messages.UpdateSuccess);
-        //}
+        public IResult UpdatePassword(User user)
+        {
+            _userDal.Update(user);
+            return new SuccessResult(Messages.UpdateSuccess);
+        }
     }
 }
