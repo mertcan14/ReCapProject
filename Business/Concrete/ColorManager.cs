@@ -24,14 +24,14 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(ColorValidator))]
-        //[SecuredOperation("product.add,admin")]
+        [SecuredOperation("productAdd,admin")]
         public IResult Add(Color entity)
         {
             _colorDal.Add(entity);
             return new Result(true, Messages.AddedSuccess);
         }
 
-        [SecuredOperation("product.delete,admin")]
+        [SecuredOperation("productDelete,admin")]
         public IResult Delete(int id)
         {
             _colorDal.Delete(_colorDal.Get(c => c.Id == id));
@@ -50,7 +50,7 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(ColorValidator))]
-        //[SecuredOperation("product.update,admin")]
+        [SecuredOperation("productUpdate,admin")]
         public IResult Update(Color entity)
         {
             _colorDal.Update(entity);

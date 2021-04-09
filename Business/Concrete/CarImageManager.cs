@@ -49,6 +49,7 @@ namespace Business.Concrete
             return new SuccessDataResults<CarImage>(_carImageDal.Get(i => i.Id == id));
         }
 
+        [SecuredOperation("productAdd,admin")]
         public IResult Addd(IFormFile image, CarImage carImage)
         {
             
@@ -69,7 +70,7 @@ namespace Business.Concrete
             _carImageDal.Add(carImage);
             return new SuccessResult("Car image added");
         }
-
+        [SecuredOperation("productDelete,admin")]
         public IResult Delete(CarImage carImage)
         {
             var image = _carImageDal.Get(c => c.Id == carImage.Id);
@@ -83,6 +84,7 @@ namespace Business.Concrete
             return new SuccessResult("Image was deleted successfully");
         }
 
+        [SecuredOperation("productUpdate,admin")]
         public IResult Update(IFormFile image, CarImage carImage)
         {
             var isImage = _carImageDal.Get(c => c.Id == carImage.Id);

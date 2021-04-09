@@ -23,14 +23,14 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(BrandValidator))]
-        [SecuredOperation("product.add,admin")]
+        [SecuredOperation("productAdd,admin")]
         [CacheRemoveAspect("IBrandService.Get")]
         public IResult Add(Brand entity)
         {
             _brandDal.Add(entity);
             return new SuccessResult(Messages.AddedSuccess);
         }
-        [SecuredOperation("product.delete,admin")]
+        [SecuredOperation("productDelete,admin")]
         public IResult Delete(int id)
         {
             _brandDal.Delete(_brandDal.Get(c => c.Id == id));
@@ -47,7 +47,7 @@ namespace Business.Concrete
             return new SuccessDataResults<Brand>(_brandDal.Get(c => c.Id == id), Messages.ListedSuccess);
         }
         [ValidationAspect(typeof(BrandValidator))]
-        [SecuredOperation("product.update,admin")]
+        [SecuredOperation("productUpdate,admin")]
         public IResult Update(Brand entity)
         {
             _brandDal.Update(entity);
