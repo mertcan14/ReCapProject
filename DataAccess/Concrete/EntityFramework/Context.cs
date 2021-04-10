@@ -18,6 +18,7 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<Color> Colors { get; set; }
         public DbSet<CreditCard> CreditCards { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<BlockedUser> BlockedUsers { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<HomePageCar> HomePageCars { get; set; }

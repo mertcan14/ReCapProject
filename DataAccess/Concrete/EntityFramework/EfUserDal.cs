@@ -36,5 +36,21 @@ namespace DataAccess.Concrete.EntityFramework
                 return result.First();
             }
         }
+
+        public List<UserInformation> GetAllForManager()
+        {
+            using (var context = new Context())
+            {
+                var result = from user in context.Users
+                             select new UserInformation
+                             {
+                                 Email = user.Email,
+                                 FirstName = user.FirstName,
+                                 Id = user.Id,
+                                 LastName = user.LastName
+                             };
+                return result.ToList();
+            }
+        }
     }
 }

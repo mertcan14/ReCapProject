@@ -33,6 +33,50 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet("getall")]
+        public IActionResult GetAll()
+        {
+            var result = _userService.GetAll();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("getallmanager")]
+        public IActionResult GetAllForManager()
+        {
+            var result = _userService.GetAllForManager();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("blockuser")]
+        public IActionResult BlockUser(int id)
+        {
+            var result = _userService.BlockingUser(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("removeblockuser")]
+        public IActionResult RemoveBlockUser(int id)
+        {
+            var result = _userService.RemoveBlockingUser(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
         [HttpPost("update")]
         public IActionResult Update(UserForRegisterDto userForRegisterDto)
         {
@@ -43,64 +87,6 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
-
-
-
-
-        //[HttpPost("add")]
-        //public IActionResult Add(User user)
-        //{
-        //    var result = _userService.Add(user);
-        //    if (result.Success)
-        //    {
-        //        return Ok(result);
-        //    }
-        //    return BadRequest(result);
-        //}
-
-        //[HttpGet("getall")]
-        //public IActionResult GetAll()
-        //{
-        //    var result = _userService.GetAll();
-        //    if (result.Success)
-        //    {
-        //        return Ok(result);
-        //    }
-        //    return BadRequest(result);
-        //}
-
-        //[HttpGet("delete")]
-        //public IActionResult Delete(int id)
-        //{
-        //    var result = _userService.Delete(id);
-        //    if (result.Success)
-        //    {
-        //        return Ok(result);
-        //    }
-        //    return BadRequest(result);
-        //}
-
-        //[HttpPost("update")]
-        //public IActionResult Update(User user)
-        //{
-        //    var result = _userService.Update(user);
-        //    if (result.Success)
-        //    {
-        //        return Ok(result);
-        //    }
-        //    return BadRequest(result);
-        //}
-
-        //[HttpGet("getbyid")]
-        //public IActionResult GetById(int id)
-        //{
-        //    var result = _userService.GetById(id);
-        //    if (result.Success)
-        //    {
-        //        return Ok(result);
-        //    }
-        //    return BadRequest(result);
-        //}
 
     }
 }

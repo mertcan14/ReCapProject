@@ -29,6 +29,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<CreditCardManager>().As<ICreditCardService>().SingleInstance();
             builder.RegisterType<EfCreditCardDal>().As<ICreditCardDal>().SingleInstance();
 
+            builder.RegisterType<BlockedUserManager>().As<IBlockedUserService>().SingleInstance();
+            builder.RegisterType<EfBlockedUserDal>().As<IBlockedUserDal>().SingleInstance();
+
             builder.RegisterType<UserOperationClaimManager>().As<IUserOperationClaimService>().SingleInstance();
             builder.RegisterType<EfUserOperationClaimDal>().As<IUserOperationClaimDal>().SingleInstance();
 

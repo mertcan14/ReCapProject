@@ -36,5 +36,9 @@ namespace Business.Constants
 
         public static string CanRent = "Araç müsait";
         public static string CantRent = "Araç müsait değil";
+
+        public static string BlockedSuccess = "Kullanıcı Bloklandı";
+
+        public static string BlockedDelete = "Kullanıcının Blokesi Kaldırıldı";
     }
 }
